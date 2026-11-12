@@ -23,7 +23,7 @@ jobs:
           java-version: '17'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: Extract project
         run: unzip -q EditMaster_Android_v1_0_Fresh.zip -d extracted
