@@ -1,0 +1,45 @@
+
+name: EditMaster Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'EditMaster_Android_v1_0_Fresh.zip'
+      - '.github/workflows/android.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Extract project
+        run: unzip -q EditMaster_Android_v1_0_Fresh.zip -d extracted
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Build APK
+        run: |
+          cd extracted/EditMaster_Android
+          gradle assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: EditMaster-Android-APK
+          path: extracted/EditMaster_Android/app/build/outputs/apk/debug/app-debug.apk
